@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import bannerOne from "../../assets/banner-1.webp";
 import bannerTwo from "../../assets/banner-2.webp";
 import bannerThree from "../../assets/banner-3.webp";
+
+
 import {
   Airplay,
   BabyIcon,
@@ -16,7 +18,20 @@ import {
   UmbrellaIcon,
   WashingMachine,
   WatchIcon,
+
+  LaptopIcon,
+  CpuIcon,
+  MousePointerIcon,
+  RouterIcon,
+  GamepadIcon
 } from "lucide-react";
+
+import {
+  SiHp, SiDell, SiLenovo, SiApple,
+  SiAsus, SiAcer, 
+} from "react-icons/si";
+
+
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,20 +47,20 @@ import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import { getFeatureImages } from "@/store/common-slice";
 
 const categoriesWithIcon = [
-  { id: "men", label: "Men", icon: ShirtIcon },
-  { id: "women", label: "Women", icon: CloudLightning },
-  { id: "kids", label: "Kids", icon: BabyIcon },
-  { id: "accessories", label: "Accessories", icon: WatchIcon },
-  { id: "footwear", label: "Footwear", icon: UmbrellaIcon },
+  { id: "laptop", label: "Laptop", icon: LaptopIcon },
+  { id: "pc components", label: "PC Components", icon: CpuIcon },
+  { id: "accessories", label: "Accessories", icon: MousePointerIcon },
+  { id: "gaming gear", label: "Gaming Gear", icon: GamepadIcon },
+  { id: "networking & connectivityr", label: "Networking & Connectivity", icon: RouterIcon },
 ];
 
 const brandsWithIcon = [
-  { id: "nike", label: "Nike", icon: Shirt },
-  { id: "adidas", label: "Adidas", icon: WashingMachine },
-  { id: "puma", label: "Puma", icon: ShoppingBasket },
-  { id: "levi", label: "Levi's", icon: Airplay },
-  { id: "zara", label: "Zara", icon: Images },
-  { id: "h&m", label: "H&M", icon: Heater },
+  { id: "hp", label: "HP", icon: SiHp  },
+  { id: "dell", label: "Dell", icon: SiDell },
+  { id: "apple", label: "Apple", icon: SiApple },
+  { id: "asus", label: "Asus", icon: SiAsus},
+  { id: "acer", label: "Acer", icon: SiAcer },
+  { id: "lenovo", label: "Lenovo", icon: SiLenovo },
 ];
 function ShoppingHome() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -125,14 +140,13 @@ function ShoppingHome() {
       <div className="relative w-full h-[600px] overflow-hidden">
         {featureImageList && featureImageList.length > 0
           ? featureImageList.map((slide, index) => (
-              <img
-                src={slide?.image}
-                key={index}
-                className={`${
-                  index === currentSlide ? "opacity-100" : "opacity-0"
+            <img
+              src={slide?.image}
+              key={index}
+              className={`${index === currentSlide ? "opacity-100" : "opacity-0"
                 } absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
-              />
-            ))
+            />
+          ))
           : null}
         <Button
           variant="outline"
@@ -203,6 +217,8 @@ function ShoppingHome() {
         </div>
       </section>
 
+
+
       <section className="py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
@@ -211,12 +227,12 @@ function ShoppingHome() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {productList && productList.length > 0
               ? productList.map((productItem) => (
-                  <ShoppingProductTile
-                    handleGetProductDetails={handleGetProductDetails}
-                    product={productItem}
-                    handleAddtoCart={handleAddtoCart}
-                  />
-                ))
+                <ShoppingProductTile
+                  handleGetProductDetails={handleGetProductDetails}
+                  product={productItem}
+                  handleAddtoCart={handleAddtoCart}
+                />
+              ))
               : null}
           </div>
         </div>
