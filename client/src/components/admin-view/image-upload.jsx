@@ -51,7 +51,13 @@ function ProductImageUpload({
     data.append("my_file", imageFile);
     const response = await axios.post(
       "https://safetronicecommerceserver.onrender.com/api/admin/products/upload-image",
-      data
+      data,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true, // Important if using authentication
+      }
     );
     console.log(response, "response");
 
