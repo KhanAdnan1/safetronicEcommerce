@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+//import API from "@/api";
+
+import API from '../../../api.js'
+
+
 const initialState = {
   isLoading: false,
   productList: [],
@@ -18,7 +23,9 @@ export const fetchAllFilteredProducts = createAsyncThunk(
     });
 
     const result = await axios.get(
-      `https://safetronicecommerceserver.onrender.com/api/shop/products/get?${query}`
+      //`http://localhost:8080/api/shop/products/get?${query}`
+      `${API}/shop/products/get?${query}`
+      //`https://safetronicecommerceserver.onrender.com/api/shop/products/get?${query}`
     );
 
     console.log(result);
@@ -31,7 +38,9 @@ export const fetchProductDetails = createAsyncThunk(
   "/products/fetchProductDetails",
   async (id) => {
     const result = await axios.get(
-      `https://safetronicecommerceserver.onrender.com/api/shop/products/get/${id}`
+      `${API}/shop/products/get/${id}`
+      //`http://localhost:8080/api/shop/products/get/${id}`
+      //`https://safetronicecommerceserver.onrender.com/api/shop/products/get/${id}`
     );
 
     return result?.data;

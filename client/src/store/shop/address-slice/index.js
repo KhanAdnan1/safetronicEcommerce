@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+import API from "@/api";
+
 const initialState = {
   isLoading: false,
   addressList: [],
@@ -10,7 +12,9 @@ export const addNewAddress = createAsyncThunk(
   "/addresses/addNewAddress",
   async (formData) => {
     const response = await axios.post(
-      "https://safetronicecommerceserver.onrender.com/api/shop/address/add",
+
+      //"https://safetronicecommerceserver.onrender.com/api/shop/address/add",
+      `${API}/shop/address/add`,
       formData
     );
 
@@ -22,7 +26,8 @@ export const fetchAllAddresses = createAsyncThunk(
   "/addresses/fetchAllAddresses",
   async (userId) => {
     const response = await axios.get(
-      `https://safetronicecommerceserver.onrender.com/api/shop/address/get/${userId}`
+      //`https://safetronicecommerceserver.onrender.com/api/shop/address/get/${userId}`
+      `${API}/shop/address/get/${userId}`,
     );
 
     return response.data;
@@ -33,8 +38,10 @@ export const editaAddress = createAsyncThunk(
   "/addresses/editaAddress",
   async ({ userId, addressId, formData }) => {
     const response = await axios.put(
-      `https://safetronicecommerceserver.onrender.com/api/shop/address/update/${userId}/${addressId}`,
-      formData
+      // `https://safetronicecommerceserver.onrender.com/api/shop/address/update/${userId}/${addressId}`,
+      // formData
+
+      `${API}/shop/address/update/${userId}/${addressId}`,formData
     );
 
     return response.data;
@@ -45,7 +52,8 @@ export const deleteAddress = createAsyncThunk(
   "/addresses/deleteAddress",
   async ({ userId, addressId }) => {
     const response = await axios.delete(
-      `https://safetronicecommerceserver.onrender.com/api/shop/address/delete/${userId}/${addressId}`
+      `${API}/shop/address/delete/${userId}/${addressId}`,
+      //`https://safetronicecommerceserver.onrender.com/api/shop/address/delete/${userId}/${addressId}`
     );
 
     return response.data;

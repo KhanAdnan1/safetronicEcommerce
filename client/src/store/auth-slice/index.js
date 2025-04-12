@@ -1,18 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import API from "../../api.js"
+
+
 
 const initialState = {
   isAuthenticated: false,
   isLoading: true,
   user: null,
 };
-
+//"https://safetronicecommerceserver.onrender.com/api/auth/register",
 export const registerUser = createAsyncThunk(
   "/auth/register",
 
   async (formData) => {
     const response = await axios.post(
-      "https://safetronicecommerceserver.onrender.com/api/auth/register",
+      `${API}/auth/register`,
+      //"https://safetronicecommerceserver.onrender.com/api/auth/register",
       formData,
       {
         withCredentials: true,
@@ -23,12 +27,15 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+
+// "http://localhost:8080/api/auth/login",
 export const loginUser = createAsyncThunk(
   "/auth/login",
 
   async (formData) => {
     const response = await axios.post(
-      "https://safetronicecommerceserver.onrender.com/api/auth/login",
+      `${API}/auth/login`,
+      //"https://safetronicecommerceserver.onrender.com/api/auth/login",
       formData,
       {
         withCredentials: true,
@@ -44,7 +51,7 @@ export const logoutUser = createAsyncThunk(
 
   async () => {
     const response = await axios.post(
-      "https://safetronicecommerceserver.onrender.com/api/auth/logout",
+      `${API}/auth/logout`,
       {},
       {
         withCredentials: true,
@@ -60,7 +67,7 @@ export const checkAuth = createAsyncThunk(
 
   async () => {
     const response = await axios.get(
-      "https://safetronicecommerceserver.onrender.com/api/auth/check-auth",
+      `${API}/auth/check-auth`,
       {
         withCredentials: true,
         headers: {

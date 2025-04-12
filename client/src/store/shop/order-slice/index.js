@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import API from "@/api";
 const initialState = {
   approvalURL: null,
   isLoading: false,
@@ -13,8 +13,10 @@ export const createNewOrder = createAsyncThunk(
   "/order/createNewOrder",
   async (orderData) => {
     const response = await axios.post(
-      "https://safetronicecommerceserver.onrender.com/api/shop/order/create",
-      orderData
+
+      `${API}shop/order/create`,orderData
+      //"https://safetronicecommerceserver.onrender.com/api/shop/order/create",
+      //orderData
     );
 
     return response.data;
@@ -25,7 +27,8 @@ export const capturePayment = createAsyncThunk(
   "/order/capturePayment",
   async ({ paymentId, payerId, orderId }) => {
     const response = await axios.post(
-      "https://safetronicecommerceserver.onrender.com/api/shop/order/capture",
+      `${API}shop/order/capture`,
+      //"https://safetronicecommerceserver.onrender.com/api/shop/order/capture",
       {
         paymentId,
         payerId,
@@ -41,7 +44,8 @@ export const getAllOrdersByUserId = createAsyncThunk(
   "/order/getAllOrdersByUserId",
   async (userId) => {
     const response = await axios.get(
-      `https://safetronicecommerceserver.onrender.com/api/shop/order/list/${userId}`
+      `${API}shop/order/list/${userId}`,
+      //`https://safetronicecommerceserver.onrender.com/api/shop/order/list/${userId}`
     );
 
     return response.data;
@@ -52,7 +56,8 @@ export const getOrderDetails = createAsyncThunk(
   "/order/getOrderDetails",
   async (id) => {
     const response = await axios.get(
-      `https://safetronicecommerceserver.onrender.com/api/shop/order/details/${id}`
+      `${API}shop/order/details/${id}`
+      //`https://safetronicecommerceserver.onrender.com/api/shop/order/details/${id}`
     );
 
     return response.data;

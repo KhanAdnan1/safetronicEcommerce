@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+//import API from "../../api.js"
+import API from "@/api.js";
+
 
 const initialState = {
   isLoading: false,
@@ -10,7 +13,8 @@ export const addNewProduct = createAsyncThunk(
   "/products/addnewproduct",
   async (formData) => {
     const result = await axios.post(
-      "https://safetronicecommerceserver.onrender.com/api/admin/products/add",
+      `${API}/admin/products/add`,
+      //"https://safetronicecommerceserver.onrender.com/api/admin/products/add",
       formData,
       {
         headers: {
@@ -27,7 +31,9 @@ export const fetchAllProducts = createAsyncThunk(
   "/products/fetchAllProducts",
   async () => {
     const result = await axios.get(
-      "https://safetronicecommerceserver.onrender.com/api/admin/products/get"
+      `${API}/admin/products/get`,
+      //"https://safetronicecommerceserver.onrender.com/api/admin/products/get"
+
     );
 
     return result?.data;
@@ -38,7 +44,8 @@ export const editProduct = createAsyncThunk(
   "/products/editProduct",
   async ({ id, formData }) => {
     const result = await axios.put(
-      `https://safetronicecommerceserver.onrender.com/api/admin/products/edit/${id}`,
+      `${API}/admin/products/edit/${id}`,
+      //`https://safetronicecommerceserver.onrender.com/api/admin/products/edit/${id}`,
       formData,
       {
         headers: {
@@ -55,7 +62,8 @@ export const deleteProduct = createAsyncThunk(
   "/products/deleteProduct",
   async (id) => {
     const result = await axios.delete(
-      `https://safetronicecommerceserver.onrender.com/api/admin/products/delete/${id}`
+      `${API}/admin/products/delete/${id}`,
+      //`https://safetronicecommerceserver.onrender.com/api/admin/products/delete/${id}`
     );
 
     return result?.data;

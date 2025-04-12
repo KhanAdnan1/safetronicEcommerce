@@ -6,6 +6,8 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import { Skeleton } from "../ui/skeleton";
 
+import API from "@/api";
+
 function ProductImageUpload({
   imageFile,
   setImageFile,
@@ -50,7 +52,10 @@ function ProductImageUpload({
     const data = new FormData();
     data.append("my_file", imageFile);
     const response = await axios.post(
-      "https://safetronicecommerceserver.onrender.com/api/admin/products/upload-image",
+      
+      //"http://localhost:8080/api/admin/products/upload-image",
+      //data,
+      `${API}/admin/products/upload-image`,
       data,
       {
         headers: {

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import API from "@/api";
 const initialState = {
   isLoading: false,
   searchResults: [],
@@ -10,7 +10,8 @@ export const getSearchResults = createAsyncThunk(
   "/order/getSearchResults",
   async (keyword) => {
     const response = await axios.get(
-      `https://safetronicecommerceserver.onrender.com/api/shop/search/${keyword}`
+      `${API}/shop/search/${keyword}`
+      //`https://safetronicecommerceserver.onrender.com/api/shop/search/${keyword}`
     );
 
     return response.data;
