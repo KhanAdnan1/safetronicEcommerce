@@ -1,4 +1,6 @@
 import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
+
+import logo from "../../assets/logo.jpg"
 import {
   Link,
   useLocation,
@@ -33,19 +35,19 @@ function MenuItems() {
     sessionStorage.removeItem("filters");
     const currentFilter =
       getCurrentMenuItem.id !== "home" &&
-      getCurrentMenuItem.id !== "products" &&
-      getCurrentMenuItem.id !== "search"
+        getCurrentMenuItem.id !== "products" &&
+        getCurrentMenuItem.id !== "search"
         ? {
-            category: [getCurrentMenuItem.id],
-          }
+          category: [getCurrentMenuItem.id],
+        }
         : null;
 
     sessionStorage.setItem("filters", JSON.stringify(currentFilter));
 
     location.pathname.includes("listing") && currentFilter !== null
       ? setSearchParams(
-          new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
-        )
+        new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
+      )
       : navigate(getCurrentMenuItem.path);
   }
 
@@ -139,8 +141,13 @@ function ShoppingHeader() {
     <header className="sticky top-0 z-40 w-full border-b bg-background">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <Link to="/shop/home" className="flex items-center gap-2">
-          <HousePlug className="h-6 w-6" />
-          <span className="font-bold">Ecommerce</span>
+          {/* <HousePlug className="h-6 w-6" /> */}
+          <img
+            src={logo}
+            className="ml-9 w-8 h-8 rounded-full shadow-2xl"
+            alt="Logo"
+          />
+          <span className="font-bold">Safetronic</span>
         </Link>
         <Sheet>
           <SheetTrigger asChild>
