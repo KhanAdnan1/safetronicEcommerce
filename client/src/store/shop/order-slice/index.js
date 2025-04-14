@@ -14,7 +14,7 @@ export const createNewOrder = createAsyncThunk(
   async (orderData) => {
     const response = await axios.post(
 
-      `${API}shop/order/create`,orderData
+      `${API}/shop/order/create`,orderData
       //"https://safetronicecommerceserver.onrender.com/api/shop/order/create",
       //orderData
     );
@@ -27,7 +27,7 @@ export const capturePayment = createAsyncThunk(
   "/order/capturePayment",
   async ({ paymentId, payerId, orderId }) => {
     const response = await axios.post(
-      `${API}shop/order/capture`,
+      `${API}/shop/order/capture`,
       //"https://safetronicecommerceserver.onrender.com/api/shop/order/capture",
       {
         paymentId,
@@ -44,7 +44,7 @@ export const getAllOrdersByUserId = createAsyncThunk(
   "/order/getAllOrdersByUserId",
   async (userId) => {
     const response = await axios.get(
-      `${API}shop/order/list/${userId}`,
+      `${API}/shop/order/list/${userId}`,
       //`https://safetronicecommerceserver.onrender.com/api/shop/order/list/${userId}`
     );
 
@@ -56,7 +56,7 @@ export const getOrderDetails = createAsyncThunk(
   "/order/getOrderDetails",
   async (id) => {
     const response = await axios.get(
-      `${API}shop/order/details/${id}`
+      `${API}/shop/order/details/${id}`
       //`https://safetronicecommerceserver.onrender.com/api/shop/order/details/${id}`
     );
 
@@ -72,6 +72,7 @@ const shoppingOrderSlice = createSlice({
       state.orderDetails = null;
     },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(createNewOrder.pending, (state) => {
@@ -112,8 +113,22 @@ const shoppingOrderSlice = createSlice({
       .addCase(getOrderDetails.rejected, (state) => {
         state.isLoading = false;
         state.orderDetails = null;
+      })
+      // 👉 Add this block to handle payment capture
+      .addCase(capturePayment.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(capturePayment.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // Optionally log or store the result here
+        console.log("Payment capture successful:", action.payload);
+      })
+      .addCase(capturePayment.rejected, (state, action) => {
+        state.isLoading = false;
+        console.error("Payment capture failed:", action.error);
       });
-  },
+  }
+  
 });
 
 export const { resetOrderDetails } = shoppingOrderSlice.actions;
