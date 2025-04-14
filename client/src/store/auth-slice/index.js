@@ -34,7 +34,7 @@ export const loginUser = createAsyncThunk(
 
   async (formData) => {
     const response = await axios.post(
-      `${API}auth/login`,
+      `${API}/auth/login`,
       //"https://safetronicecommerceserver.onrender.com/api/auth/login",
       formData,
       {
