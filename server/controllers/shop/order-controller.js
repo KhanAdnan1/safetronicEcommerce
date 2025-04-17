@@ -27,9 +27,13 @@ const createOrder = async (req, res) => {
       payer: {
         payment_method: "paypal",
       },
+      // redirect_urls: {
+      //   return_url: "https://safetronicstore.onrender.com/shop/paypal-return",
+      //   cancel_url: "https://safetronicstore.onrender.com/shop/paypal-cancel",
+      // },
       redirect_urls: {
-        return_url: "https://safetronicstore.onrender.com/shop/paypal-return",
-        cancel_url: "https://safetronicstore.onrender.com/shop/paypal-cancel",
+        return_url: `${process.env.FRONTEND_URL}/shop/paypal-return`,
+        cancel_url: `${process.env.FRONTEND_URL}/shop/paypal-cancel`,
       },
       transactions: [
         {
