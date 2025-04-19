@@ -23,11 +23,18 @@ function ProductImageUpload({
   console.log(isEditMode, "isEditMode");
 
   function handleImageFileChange(event) {
-    console.log(event.target.files, "event.target.files");
     const selectedFile = event.target.files?.[0];
-    console.log(selectedFile);
-
-    if (selectedFile) setImageFile(selectedFile);
+  
+    if (selectedFile) {
+      const allowedTypes = ["image/jpeg", "image/png"];
+      if (!allowedTypes.includes(selectedFile.type)) {
+        alert("Only JPG and PNG files are allowed.");
+        if (inputRef.current) inputRef.current.value = "";
+        return;
+      }
+  
+      setImageFile(selectedFile); // Only set if it's valid
+    }
   }
 
   function handleDragOver(event) {
@@ -48,33 +55,56 @@ function ProductImageUpload({
   }
 
   async function uploadImageToCloudinary() {
+    if (!imageFile) {
+      alert("Please select an image first.");
+      return;
+    }
+  
+    const allowedTypes = ["image/jpeg", "image/png"];
+    if (!allowedTypes.includes(imageFile.type)) {
+      alert("Only JPG and PNG files are allowed.");
+      return;
+    }
+  
     setImageLoadingState(true);
     const data = new FormData();
     data.append("my_file", imageFile);
-    const response = await axios.post(
-      
-      //"http://localhost:8080/api/admin/products/upload-image",
-      //data,
-      `${API}/admin/products/upload-image`,
-      data,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true, // Important if using authentication
+  
+    try {
+      const response = await axios.post(
+        `${API}/admin/products/upload-image`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+  
+      if (response?.data?.success) {
+        setUploadedImageUrl(response.data.result.url);
+      } else {
+        alert("Something went wrong during image upload.");
       }
-    );
-    console.log(response, "response");
-
-    if (response?.data?.success) {
-      setUploadedImageUrl(response.data.result.url);
+    } catch (error) {
+      if (error.response?.data?.message) {
+        alert(error.response.data.message);
+      } else {
+        alert("Something went wrong while uploading. Please try again.");
+      }
+    } finally {
       setImageLoadingState(false);
     }
   }
-
   useEffect(() => {
-    if (imageFile !== null) uploadImageToCloudinary();
-  }, [imageFile]);
+    // If imageFile is not null, call uploadImageToCloudinary
+    if (imageFile) {
+      uploadImageToCloudinary();
+    }
+  }, [imageFile]); // Trigger when imageFile changes
+  
+
 
   return (
     <div
@@ -84,9 +114,8 @@ function ProductImageUpload({
       <div
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        className={`${
-          isEditMode ? "opacity-60" : ""
-        } border-2 border-dashed rounded-lg p-4`}
+        className={`${isEditMode ? "opacity-60" : ""
+          } border-2 border-dashed rounded-lg p-4`}
       >
         <Input
           id="image-upload"
@@ -95,13 +124,13 @@ function ProductImageUpload({
           ref={inputRef}
           onChange={handleImageFileChange}
           disabled={isEditMode}
+          accept="image/jpeg, image/png"
         />
         {!imageFile ? (
           <Label
             htmlFor="image-upload"
-            className={`${
-              isEditMode ? "cursor-not-allowed" : ""
-            } flex flex-col items-center justify-center h-32 cursor-pointer`}
+            className={`${isEditMode ? "cursor-not-allowed" : ""
+              } flex flex-col items-center justify-center h-32 cursor-pointer`}
           >
             <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-2" />
             <span>Drag & drop or click to upload image</span>

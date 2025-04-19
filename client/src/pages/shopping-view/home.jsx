@@ -136,45 +136,51 @@ function ShoppingHome() {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="relative w-full h-[600px] overflow-hidden">
-        {featureImageList && featureImageList.length > 0
-          ? featureImageList.map((slide, index) => (
-            <img
-              src={slide?.image}
-              key={index}
-              className={`${index === currentSlide ? "opacity-100" : "opacity-0"
-                } absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
-            />
-          ))
-          : null}
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() =>
-            setCurrentSlide(
-              (prevSlide) =>
-                (prevSlide - 1 + featureImageList.length) %
-                featureImageList.length
-            )
-          }
-          className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/80"
-        >
-          <ChevronLeftIcon className="w-4 h-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() =>
-            setCurrentSlide(
-              (prevSlide) => (prevSlide + 1) % featureImageList.length
-            )
-          }
-          className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/80"
-        >
-          <ChevronRightIcon className="w-4 h-4" />
-        </Button>
-      </div>
+    <div className="flex flex-col min-h-screen">  
+  <div className="relative w-full h-[500px] overflow-hidden flex items-center justify-center rounded-lg">
+  {featureImageList && featureImageList.length > 0
+    ? featureImageList.map((slide, index) => (
+        <img
+          src={slide?.image}
+          key={index}
+          alt={`Slide ${index}`}
+          className={`transition-opacity duration-1000 object-contain max-w-[90%] max-h-[90%] ${
+            index === currentSlide ? "opacity-100 absolute" : "opacity-0 absolute"
+          }`}
+        />
+      ))
+    : null}
+
+  {/* Left Button */}
+  <Button
+    variant="outline"
+    size="icon"
+    onClick={() =>
+      setCurrentSlide(
+        (prevSlide) =>
+          (prevSlide - 1 + featureImageList.length) % featureImageList.length
+      )
+    }
+    className="absolute top-1/2 left-4 -translate-y-1/2 shadow-md"
+  >
+    <ChevronLeftIcon className="w-5 h-5 text-gray-800" />
+  </Button>
+
+  {/* Right Button */}
+  <Button
+    variant="outline"
+    size="icon"
+    onClick={() =>
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % featureImageList.length)
+    }
+    className="absolute top-1/2 right-4 -translate-y-1/2 shadow-md"
+  >
+    <ChevronRightIcon className="w-5 h-5 text-gray-800" />
+  </Button>
+</div>
+
+
+
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">

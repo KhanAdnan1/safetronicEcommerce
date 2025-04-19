@@ -33,6 +33,30 @@ export const addFeatureImage = createAsyncThunk(
   }
 );
 
+
+// export const deleteFeatureImage = createAsyncThunk(
+//   "/products/deleteProduct",
+//   async (id) => {
+//     const result = await axios.delete(
+//       `${API}/common/feature/delete${id}`,
+//       //`https://safetronicecommerceserver.onrender.com/api/admin/products/delete/${id}`
+//     );
+
+//     return result?.data;
+//   }
+// );
+
+export const deleteFeatureImage = createAsyncThunk(
+  "/products/deleteFeatureImage", // Adjust the action type
+  async (id) => {
+    const result = await axios.delete(
+      `${API}/common/feature/delete/${id}`, // Added a slash between `delete` and `id`
+    );
+
+    return result?.data;
+  }
+);
+
 const commonSlice = createSlice({
   name: "commonSlice",
   initialState,
