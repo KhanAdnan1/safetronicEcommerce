@@ -28,8 +28,11 @@ import {
 
 import {
   SiHp, SiDell, SiLenovo, SiApple,
-  SiAsus, SiAcer, 
+  SiAsus, SiAcer,
 } from "react-icons/si";
+import { FaMicrosoft } from "react-icons/fa";
+
+
 
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -55,12 +58,14 @@ const categoriesWithIcon = [
 ];
 
 const brandsWithIcon = [
+  { id: "Microsoft", label: "Microsoft", icon: FaMicrosoft },
+  { id: "apple", label: "Apple", icon: SiApple },
   { id: "hp", label: "HP", icon: SiHp  },
   { id: "dell", label: "Dell", icon: SiDell },
-  { id: "apple", label: "Apple", icon: SiApple },
+  { id: "lenovo", label: "Lenovo", icon: SiLenovo },
   { id: "asus", label: "Asus", icon: SiAsus},
   { id: "acer", label: "Acer", icon: SiAcer },
-  { id: "lenovo", label: "Lenovo", icon: SiLenovo },
+  
 ];
 function ShoppingHome() {
   const [currentSlide, setCurrentSlide] = useState(0);

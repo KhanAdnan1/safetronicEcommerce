@@ -12,6 +12,7 @@ import { Label } from "../ui/label";
 import StarRatingComponent from "../common/star-rating";
 import { useEffect, useState } from "react";
 import { addReview, getReviews } from "@/store/shop/review-slice";
+//import { toast } from "@/components/ui/use-toast";
 
 
 
@@ -35,10 +36,11 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
     setRating(getRating);
   }
 
-  function handleAddToCart(getCurrentProductId, getTotalStock) {
-    const { isAuthenticated } = useSelector((state) => state.auth);
+  function handleAddToCart(getCurrentProductId, getTotalStock,) {
+    
     let getCartItems = cartItems.items || [];
-
+    
+    
 
     if (getCartItems.length) {
       const indexOfCurrentItem = getCartItems.findIndex(
@@ -158,36 +160,37 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                 Out of Stock
               </Button>
             ) : (
-              // <Button
-              //   className="w-full"
-              //   onClick={() =>
-              //     handleAddToCart(
-              //       productDetails?._id,
-              //       productDetails?.totalStock
-              //     )
-              //   }
-              // >
-              //   Add to Cart
-              // </Button>
               <Button
-                className={`w-full ${(!user || productDetails?.totalStock === 0) ? 'opacity-60 cursor-not-allowed' : ''}`}
-                onClick={() => {
-                  console.log("User is:", user); // Debugging the user state
-                  if (!user) {
-                    toast({
-                      title: "Please log in to add items to your cart",
-                      variant: "destructive",
-                    });
-                    return;
-                  }
-                  if (productDetails?.totalStock > 0) {
-                    handleAddToCart(productDetails?._id, productDetails?.totalStock);
-                  }
-                }}
-                disabled={!user || productDetails?.totalStock === 0}
+                className="w-full"
+                onClick={() =>
+                  
+                  handleAddToCart(
+                    productDetails?._id,
+                    productDetails?.totalStock
+                  )
+                }
               >
-                {productDetails?.totalStock === 0 ? "Out of Stock" : "Add to Cart"}
+                Add to Cart
               </Button>
+              // <Button
+              //   className={`w-full ${(!user || productDetails?.totalStock === 0) ? 'opacity-60 cursor-not-allowed' : ''}`}
+              //   onClick={() => {
+              //     console.log("User is:", user); // Debugging the user state
+              //     if (!user) {
+              //       toast({
+              //         title: "Please log in to add items to your cart",
+              //         variant: "destructive",
+              //       });
+              //       return;
+              //     }
+              //     if (productDetails?.totalStock > 0) {
+              //       handleAddToCart(productDetails?._id, productDetails?.totalStock);
+              //     }
+              //   }}
+              //   disabled={!user || productDetails?.totalStock === 0}
+              // >
+              //   {productDetails?.totalStock === 0 ? "Out of Stock" : "Add to Cart"}
+              // </Button>
 
 
 

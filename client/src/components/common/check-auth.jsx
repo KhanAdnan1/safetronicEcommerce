@@ -70,14 +70,15 @@ function CheckAuth({ isAuthenticated, user, children }) {
   const authRoutes = ["/auth/login", "/auth/register"];
   const publicShopRoutes = [
     "/shop/home",
-    "/shop/listing",
-    "/shop/search",
+    
   ];
   const protectedShopRoutes = [
     "/shop/checkout",
     "/shop/account",
     "/shop/paypal-return",
     "/shop/payment-success",
+    "/shop/listing",
+    "/shop/search",
   ];
 
   // Root route "/"

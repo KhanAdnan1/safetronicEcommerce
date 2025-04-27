@@ -76,6 +76,7 @@ export const addProductFormElements = [
       { id: "asus", label: "Asus" },
       { id: "acer", label: "Acer" },
       { id: "lenovo", label: "Lenovo" },
+      { id: "microsoft", label: "Microsoft" },
     ],
   },
   {
@@ -161,6 +162,7 @@ export const brandOptionsMap = {
   asus: "Asus",
   acer: "Acer",
   lenovo: "Lenovo",
+  microsoft:"Microsoft"
 };
 
 
@@ -180,6 +182,7 @@ export const filterOptions = {
     { id: "asus", label: "Asus" },
     { id: "acer", label: "Acer" },
     { id: "lenovo", label: "Lenovo" },
+    {id: "microsoft", label: "Microsoft" }
   ],
 };
 
