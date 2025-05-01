@@ -4,6 +4,7 @@ const {
   loginUser,
   logoutUser,
   authMiddleware,
+  forgotPassword
 } = require("../../controllers/auth/auth-controller");
 
 const router = express.Router();
@@ -19,5 +20,7 @@ router.get("/check-auth", authMiddleware, (req, res) => {
     user,
   });
 });
+
+router.put("/forgotPassword", forgotPassword);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/User");
+const { findOne } = require("../../models/Order");
 
 //register
 const registerUser = async (req, res) => {
@@ -98,6 +99,25 @@ const logoutUser = (req, res) => {
   });
 };
 
+
+//forgot password
+const forgotPassword = async (req, res, next) => {
+  const { email, password } = req.body
+  
+  try {
+    chechEmail = await User.findOne({ email })
+    if (!chechEmail) {
+      res.status(400).send( "user does'n exit")
+    }
+    const hashPassword= await bcrypt.hash(password, 12);
+    chechEmail.password=hashPassword;
+    await chechEmail.save();
+    
+    res.status(200).send("Password updated successfully!");
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
+}
 //auth middleware
 const authMiddleware = async (req, res, next) => {
   const token = req.cookies.token;
@@ -119,4 +139,4 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-module.exports = { registerUser, loginUser, logoutUser, authMiddleware };
+module.exports = { registerUser, loginUser, logoutUser, authMiddleware, forgotPassword };
