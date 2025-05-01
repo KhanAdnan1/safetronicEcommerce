@@ -28,9 +28,37 @@ mongoose
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// app.use(
+//   cors({
+//     origin: process.env.Origin,
+//     methods: ["GET", "POST", "DELETE", "PUT"],
+//     allowedHeaders: [
+//       "Content-Type",
+//       "Authorization",
+//       "Cache-Control",
+//       "Expires",
+//       "Pragma",
+//     ],
+//     credentials: true,
+//   })
+// );
+
 app.use(
   cors({
-    origin: process.env.Origin,
+    origin: (origin, callback) => {
+      // Get the origins from the environment variables (or hardcoded if preferred)
+      const allowedOrigins = [
+        process.env.FRONTEND_ORIGIN_1,
+        process.env.FRONTEND_ORIGIN_2,
+      ];
+
+      // If no origin (requests from server-side or localhost), allow it
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",
@@ -42,6 +70,7 @@ app.use(
     credentials: true,
   })
 );
+
 
 app.use(cookieParser());
 app.use(express.json());
