@@ -135,6 +135,194 @@
 
 // export default ShoppingCheckout;
 
+//--->COD and Paypal<---- 
+
+// import Address from "@/components/shopping-view/address";
+// import img from "../../assets/account.jpg";
+// import { useDispatch, useSelector } from "react-redux";
+// import UserCartItemsContent from "@/components/shopping-view/cart-items-content";
+// import { Button } from "@/components/ui/button";
+// import { useState } from "react";
+// import { createNewOrder } from "@/store/shop/order-slice";
+// import { useToast } from "@/components/ui/use-toast";
+
+// function ShoppingCheckout() {
+//   const { cartItems } = useSelector((state) => state.shopCart);
+//   const { user } = useSelector((state) => state.auth);
+//   const { approvalURL } = useSelector((state) => state.shopOrder);
+//   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
+//   const [isPaymentStart, setIsPaymentStart] = useState(false);
+//   const [paymentMethod, setPaymentMethod] = useState(null); // Track selected payment method
+
+//   const dispatch = useDispatch();
+//   const { toast } = useToast();
+
+//   const totalCartAmount =
+//     cartItems && cartItems.items && cartItems.items.length > 0
+//       ? cartItems.items.reduce(
+//         (sum, currentItem) =>
+//           sum +
+//           (currentItem?.salePrice > 0
+//             ? currentItem?.salePrice
+//             : currentItem?.price) *
+//           currentItem?.quantity,
+//         0
+//       )
+//       : 0;
+
+//   // Common order data
+//   function getOrderData(method) {
+//     return {
+//       userId: user?.id,
+//       cartId: cartItems?._id,
+//       cartItems: cartItems.items.map((singleCartItem) => ({
+//         productId: singleCartItem?.productId,
+//         title: singleCartItem?.title,
+//         image: singleCartItem?.image,
+//         price:
+//           singleCartItem?.salePrice > 0
+//             ? singleCartItem?.salePrice
+//             : singleCartItem?.price,
+//         quantity: singleCartItem?.quantity,
+//       })),
+//       addressInfo: {
+//         addressId: currentSelectedAddress?._id,
+//         address: currentSelectedAddress?.address,
+//         city: currentSelectedAddress?.city,
+//         pincode: currentSelectedAddress?.pincode,
+//         phone: currentSelectedAddress?.phone,
+//         notes: currentSelectedAddress?.notes,
+//       },
+//       orderStatus: "pending",
+//       paymentMethod: method === "cod" ? "COD" : "paypal",
+//       paymentStatus: method === "cod" ? "unpaid" : "pending",
+//       totalAmount: totalCartAmount,
+//       orderDate: new Date(),
+//       orderUpdateDate: new Date(),
+//       paymentId: "",
+//       payerId: "",
+//     };
+//   }
+
+//   function handleInitiatePaypalPayment() {
+//     if (cartItems.length === 0) {
+//       toast({
+//         title: "Your cart is empty. Please add items to proceed",
+//         variant: "destructive",
+//       });
+//       return;
+//     }
+//     if (currentSelectedAddress === null) {
+//       toast({
+//         title: "Please select one address to proceed.",
+//         variant: "destructive",
+//       });
+//       return;
+//     }
+
+//     setPaymentMethod("paypal"); // Set payment method to PayPal
+//     const orderData = getOrderData("paypal");
+
+//     dispatch(createNewOrder(orderData)).then((data) => {
+//       if (data?.payload?.success) {
+//         setIsPaymentStart(true);
+        
+//         // Only redirect to PayPal if the payment method is PayPal
+//         if (data.payload.approvalURL && paymentMethod === "paypal") {
+//           window.location.href = data.payload.approvalURL;
+//         }
+//       } else {
+//         setIsPaymentStart(false);
+//       }
+//     });
+//   }
+
+//   function handleCODOrder() {
+//     if (cartItems.length === 0) {
+//       toast({
+//         title: "Your cart is empty. Please add items to proceed",
+//         variant: "destructive",
+//       });
+//       return;
+//     }
+
+//     if (currentSelectedAddress === null) {
+//       toast({
+//         title: "Please select one address to proceed.",
+//         variant: "destructive",
+//       });
+//       return;
+//     }
+
+//     setPaymentMethod("cod"); // Set payment method to COD
+//     const orderData = getOrderData("cod");
+
+//     dispatch(createNewOrder(orderData)).then((data) => {
+//       if (data?.payload?.success) {
+//         toast({
+//           title: "Order placed successfully with Cash on Delivery!",
+//           variant: "success",
+//         });
+//         // Optionally, redirect to order success page for COD
+//       }
+//     });
+//   }
+
+//   // Redirect if PayPal approved
+//   if (approvalURL && paymentMethod === "paypal") {
+//     window.location.href = approvalURL;
+//   }
+
+//   return (
+//     <div className="flex flex-col">
+//       <div className="relative h-[300px] w-full overflow-hidden">
+//         <img src={img} className="h-full w-full object-cover object-center" />
+//       </div>
+//       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5">
+//         <Address
+//           selectedId={currentSelectedAddress}
+//           setCurrentSelectedAddress={setCurrentSelectedAddress}
+//         />
+//         <div className="flex flex-col gap-4">
+//           {cartItems && cartItems.items && cartItems.items.length > 0
+//             ? cartItems.items.map((item) => (
+//               <UserCartItemsContent cartItem={item} />
+//             ))
+//             : null}
+//           <div className="mt-8 space-y-4">
+//             <div className="flex justify-between">
+//               <span className="font-bold">Total</span>
+//               <span className="font-bold">${totalCartAmount}</span>
+//             </div>
+//           </div>
+
+//           {/* Payment Buttons */}
+//           <div className="mt-4 w-full space-y-4">
+//             {/* PayPal Button */}
+//             <Button
+//               onClick={handleInitiatePaypalPayment}
+//               className="w-full"
+//               disabled={isPaymentStart}
+//             >
+//               {isPaymentStart ? "Processing PayPal Payment..." : "Checkout with PayPal"}
+//             </Button>
+
+//             {/* Cash on Delivery Button */}
+//             <Button
+//               onClick={handleCODOrder}
+//               className="w-full"
+//               disabled={isPaymentStart}
+//             >
+//               {isPaymentStart ? "Processing COD Order..." : "Place COD Order"}
+//             </Button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+//export default ShoppingCheckout;
 
 import Address from "@/components/shopping-view/address";
 import img from "../../assets/account.jpg";
@@ -148,29 +336,25 @@ import { useToast } from "@/components/ui/use-toast";
 function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
-  const { approvalURL } = useSelector((state) => state.shopOrder);
-  const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
-  const [isPaymentStart, setIsPaymentStart] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState(null); // Track selected payment method
-
   const dispatch = useDispatch();
   const { toast } = useToast();
+
+  const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
+  const [isPaymentStart, setIsPaymentStart] = useState(false);
 
   const totalCartAmount =
     cartItems && cartItems.items && cartItems.items.length > 0
       ? cartItems.items.reduce(
-        (sum, currentItem) =>
-          sum +
-          (currentItem?.salePrice > 0
-            ? currentItem?.salePrice
-            : currentItem?.price) *
-          currentItem?.quantity,
-        0
-      )
+          (sum, currentItem) =>
+            sum +
+            (currentItem?.salePrice > 0
+              ? currentItem?.salePrice
+              : currentItem?.price) * currentItem?.quantity,
+          0
+        )
       : 0;
 
-  // Common order data
-  function getOrderData(method) {
+  function getOrderData() {
     return {
       userId: user?.id,
       cartId: cartItems?._id,
@@ -193,47 +377,14 @@ function ShoppingCheckout() {
         notes: currentSelectedAddress?.notes,
       },
       orderStatus: "pending",
-      paymentMethod: method === "cod" ? "COD" : "paypal",
-      paymentStatus: method === "cod" ? "unpaid" : "pending",
+      paymentMethod: "COD",
+      paymentStatus: "unpaid",
       totalAmount: totalCartAmount,
       orderDate: new Date(),
       orderUpdateDate: new Date(),
       paymentId: "",
       payerId: "",
     };
-  }
-
-  function handleInitiatePaypalPayment() {
-    if (cartItems.length === 0) {
-      toast({
-        title: "Your cart is empty. Please add items to proceed",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (currentSelectedAddress === null) {
-      toast({
-        title: "Please select one address to proceed.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setPaymentMethod("paypal"); // Set payment method to PayPal
-    const orderData = getOrderData("paypal");
-
-    dispatch(createNewOrder(orderData)).then((data) => {
-      if (data?.payload?.success) {
-        setIsPaymentStart(true);
-        
-        // Only redirect to PayPal if the payment method is PayPal
-        if (data.payload.approvalURL && paymentMethod === "paypal") {
-          window.location.href = data.payload.approvalURL;
-        }
-      } else {
-        setIsPaymentStart(false);
-      }
-    });
   }
 
   function handleCODOrder() {
@@ -253,8 +404,8 @@ function ShoppingCheckout() {
       return;
     }
 
-    setPaymentMethod("cod"); // Set payment method to COD
-    const orderData = getOrderData("cod");
+    setIsPaymentStart(true);
+    const orderData = getOrderData();
 
     dispatch(createNewOrder(orderData)).then((data) => {
       if (data?.payload?.success) {
@@ -262,14 +413,15 @@ function ShoppingCheckout() {
           title: "Order placed successfully with Cash on Delivery!",
           variant: "success",
         });
-        // Optionally, redirect to order success page for COD
+        // Redirect or clear cart here if needed
+      } else {
+        toast({
+          title: "Something went wrong while placing the order.",
+          variant: "destructive",
+        });
       }
+      setIsPaymentStart(false);
     });
-  }
-
-  // Redirect if PayPal approved
-  if (approvalURL && paymentMethod === "paypal") {
-    window.location.href = approvalURL;
   }
 
   return (
@@ -277,17 +429,19 @@ function ShoppingCheckout() {
       <div className="relative h-[300px] w-full overflow-hidden">
         <img src={img} className="h-full w-full object-cover object-center" />
       </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5">
         <Address
           selectedId={currentSelectedAddress}
           setCurrentSelectedAddress={setCurrentSelectedAddress}
         />
+
         <div className="flex flex-col gap-4">
-          {cartItems && cartItems.items && cartItems.items.length > 0
-            ? cartItems.items.map((item) => (
-              <UserCartItemsContent cartItem={item} />
-            ))
-            : null}
+          {cartItems?.items?.length > 0 &&
+            cartItems.items.map((item) => (
+              <UserCartItemsContent key={item.productId} cartItem={item} />
+            ))}
+
           <div className="mt-8 space-y-4">
             <div className="flex justify-between">
               <span className="font-bold">Total</span>
@@ -295,24 +449,14 @@ function ShoppingCheckout() {
             </div>
           </div>
 
-          {/* Payment Buttons */}
+          {/* Cash on Delivery Button */}
           <div className="mt-4 w-full space-y-4">
-            {/* PayPal Button */}
-            <Button
-              onClick={handleInitiatePaypalPayment}
-              className="w-full"
-              disabled={isPaymentStart}
-            >
-              {isPaymentStart ? "Processing PayPal Payment..." : "Checkout with PayPal"}
-            </Button>
-
-            {/* Cash on Delivery Button */}
             <Button
               onClick={handleCODOrder}
               className="w-full"
               disabled={isPaymentStart}
             >
-              {isPaymentStart ? "Processing COD Order..." : "Place COD Order"}
+              {isPaymentStart ? "Processing Order..." : "Place COD Order"}
             </Button>
           </div>
         </div>
@@ -322,4 +466,5 @@ function ShoppingCheckout() {
 }
 
 export default ShoppingCheckout;
+
 

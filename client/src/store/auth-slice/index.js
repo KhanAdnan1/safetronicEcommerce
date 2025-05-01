@@ -62,6 +62,41 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+// export const forgotPassword=createAsyncThunk(
+//   "/auth/forgotPassword",
+
+//   async (formData) => {
+//     const response = await axios.put(
+//       `${API}/auth/forgotPassword`,
+//       //"https://safetronicecommerceserver.onrender.com/api/auth/login",
+//       formData,
+//       {
+//         withCredentials: true,
+//       }
+//     );
+//     return response.data;
+//   }
+// )
+
+
+// In auth-slice.js
+export const forgotPassword = createAsyncThunk(
+  "auth/forgotPassword",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${API}/auth/forgotPassword`,
+        formData,
+        { withCredentials: true }
+      );
+      return response.data; // should contain success message
+    } catch (err) {
+      return rejectWithValue(err.response?.data || "Error updating password");
+    }
+  }
+);
+
+
 export const checkAuth = createAsyncThunk(
   "/auth/checkauth",
 
