@@ -215,7 +215,7 @@ function AdminOrdersView() {
                         {orderItem.orderStatus}
                       </Badge>
                     </TableCell>
-                    <TableCell>${orderItem.totalAmount}</TableCell>
+                    <TableCell>KWD {orderItem.totalAmount}</TableCell>
                     <TableCell>
                       <Dialog
                         open={openDetailsDialog}

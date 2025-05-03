@@ -138,11 +138,11 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
               className={`text-3xl font-bold text-primary ${productDetails?.salePrice > 0 ? "line-through" : ""
                 }`}
             >
-              ${productDetails?.price}
+              KWD {productDetails?.price}
             </p>
             {productDetails?.salePrice > 0 ? (
               <p className="text-2xl font-bold text-muted-foreground">
-                ${productDetails?.salePrice}
+                KWD {productDetails?.salePrice}
               </p>
             ) : null}
           </div>
